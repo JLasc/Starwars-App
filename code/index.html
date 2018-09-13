@@ -1,0 +1,126 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <title>Star Wars - Express</title>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css">
+
+
+    <style>
+        #char_search {
+            width: 100%;
+        }
+    </style>
+</head>
+
+
+
+<body>
+    <script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
+
+    <div class="container">
+
+        <div class="jumbotron">
+            <h1 class="display-4">Star Wars Express</h1>
+            <p class="lead">
+                <h4>The greatest resource in the galaxy for Star Wars Statistics!.</h4>
+            </p>
+            <hr class="my-4">
+            <a class="btn btn-danger btn-lg" href="/add" role="button"><i class="fas fa-plus"></i> Add New Character</a>
+        </div>
+
+
+        <h2>Character Search</h2>
+        <input id='char_search'></input>
+
+        <div class="text-right my-4">
+            <button class="btn btn-primary" type="submit" id="search-btn" role="button"><i class="fas fa-search"></i>
+                Search
+                Your
+                Feelings. You know
+                it is true.</button>
+        </div>
+
+
+        <div id="char_info">
+
+
+        </div>
+
+
+        <div class="card">
+            <h5 class="card-header">Character Statistics</h5>
+            <div class="card-body">
+                <h5 class="card-title">
+                    <h2 id="char_name">Yoda</h2>
+                </h5>
+                <p class="card-text">
+                    <div id="stats">
+                        <h3><strong>Role:</strong><span id="char_role"> Jedi Master</span></h3>
+                        <h3><strong>Age:</strong><span id="char_age"> 900</span></h3>
+                        <h3><strong>Force Points:</strong><span id="char_force"> 2000</span></h3>
+                    </div>
+                </p>
+            </div>
+        </div>
+
+        <footer class="mt-2">
+            <a href="/api/characters">View All Characters</a>
+
+        </footer>
+
+
+    </div>
+
+
+    <script>
+        $(document).ready(function () {
+
+            $("#search-btn").on("click", function (event) {
+                event.preventDefault();
+
+                var searchedCharacter = $("#char_search").val().trim();
+
+                searchedCharacter = searchedCharacter.replace(/\s+/g, "").toLowerCase();
+
+                $.get(`/api/${searchedCharacter}`).then(function (data) {
+
+                    if (data.name === undefined) {
+                        $("#char_name").text("Character not found");
+                        $("#stats").hide();
+                    } else {
+                        $("#stats").show()
+                        $("#char_name").text(" " + data.name)
+                        $("#char_role").text(" " + data.role)
+                        $("#char_age").text(" " + data.age)
+                        $("#char_force").text(" " + data.forcePoints)
+                    }
+
+                    $("#char_search").val("")
+
+
+                });
+
+
+
+
+            })
+
+        });
+    </script>
+
+
+
+
+
+
+
+</body>
+
+</html>
